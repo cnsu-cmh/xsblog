@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.xqx.comadmin.entity.Menu;
 import com.xqx.comadmin.entity.example.MenuExample;
 import java.util.List;
+import java.util.Map;
+
+import com.xqx.comadmin.entity.vo.ShowMenuVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface MenuMapper extends BaseMapper<Menu> {
@@ -17,4 +20,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
     int updateByExampleSelective(@Param("record") Menu record, @Param("example") MenuExample example);
 
     int updateByExample(@Param("record") Menu record, @Param("example") MenuExample example);
+
+    List<ShowMenuVo> selectShowMenuByUser(Map<String,Object> map);
 }

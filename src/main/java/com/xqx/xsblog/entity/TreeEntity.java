@@ -2,7 +2,7 @@ package com.xqx.xsblog.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.xqx.comadmin.entity.DataEntity;
+import com.xqx.common.base.DataEntity;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;

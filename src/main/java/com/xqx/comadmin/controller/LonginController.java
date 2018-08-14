@@ -1,10 +1,15 @@
 package com.xqx.comadmin.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
-import com.xqx.comadmin.annotation.SysLog;
-import com.xqx.comadmin.exception.UserTypeAccountException;
-import com.xqx.comadmin.util.Constants;
-import com.xqx.comadmin.util.ResponseEntity;
+import com.xqx.comadmin.entity.vo.ShowMenuVo;
+import com.xqx.comadmin.service.MenuService;
+import com.xqx.comadmin.service.UserService;
+import com.xqx.common.annotation.SysLog;
+import com.xqx.common.config.MySysUser;
+import com.xqx.common.exception.UserTypeAccountException;
+import com.xqx.common.realm.AuthRealm;
+import com.xqx.common.util.Constants;
+import com.xqx.common.util.ResponseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -16,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.apache.shiro.subject.Subject;
@@ -31,6 +37,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.*;
 
 @Controller
 public class LonginController {
@@ -43,6 +50,12 @@ public class LonginController {
     @Qualifier("captchaProducer")
     DefaultKaptcha captchaProducer;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    MenuService menuService;
+
     public enum LoginTypeEnum {
         PAGE,ADMIN;
     }
@@ -53,10 +66,10 @@ public class LonginController {
     }
 
     @GetMapping(value = {"admin","admin/index"})
-    public String adminIndex(RedirectAttributes attributes) {
+    public String adminIndex(RedirectAttributes attributes, ModelMap map) {
         Subject s = SecurityUtils.getSubject();
         attributes.addFlashAttribute(LOGIN_TYPE, LoginTypeEnum.ADMIN);
-        return s.isAuthenticated() ? "redirect:index" : "redirect:toLogin";
+        return "redirect:toLogin";
     }
 
     @GetMapping(value = "toLogin")
@@ -77,9 +90,12 @@ public class LonginController {
     }
 
     @GetMapping(value = "index")
-    public String index(HttpSession session) {
-        LoginTypeEnum loginType = (LoginTypeEnum)session.getAttribute(LOGIN_TYPE);
-        if(LoginTypeEnum.ADMIN.equals(loginType)) {
+    public String index(HttpSession session, @ModelAttribute(LOGIN_TYPE) String loginType) {
+        if(StringUtils.isBlank(loginType)) {
+            LoginTypeEnum attribute = (LoginTypeEnum) session.getAttribute(LOGIN_TYPE);
+            loginType = attribute == null ? loginType : attribute.name();
+        }
+        if(LoginTypeEnum.ADMIN.name().equals(loginType)) {
             return "admin/index";
         }else {
             return "index";
@@ -156,5 +172,21 @@ public class LonginController {
         }
     }
 
+    @GetMapping("admin/main")
+    public String main(ModelMap map){
+        return "admin/main";
+    }
+
+    /***
+     * 获得用户所拥有的菜单列表
+     * @return
+     */
+    @GetMapping("/admin/user/getUserMenu")
+    @ResponseBody
+    public List<ShowMenuVo> getUserMenu(){
+        String userId = MySysUser.id();
+        List<ShowMenuVo> list = menuService.getShowMenuByUser(userId);
+        return list;
+    }
 
 }

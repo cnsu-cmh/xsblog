@@ -260,9 +260,9 @@
       </if>
       <if test="loginName !=null and loginName !=''">
           and (
-          u.login_name 	= #{loginName}
-          or u.tel 				= #{loginName}
-          or u.email 		= #{loginName}
+          u.login_name = #{loginName}
+          or u.tel = #{loginName}
+          or u.email = #{loginName}
           )
       </if>
       <if test="id != 0 and id != null">

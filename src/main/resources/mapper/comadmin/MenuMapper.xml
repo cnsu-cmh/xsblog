@@ -222,4 +222,44 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+  <resultMap id="showMenuMap" type="com.xqx.comadmin.entity.vo.ShowMenuVo">
+    <result property="id"       column="id" />
+    <result property="pid"      column="pid"/>
+    <result property="title"    column="title"/>
+    <result property="icon"     column="icon"/>
+    <result property="href"     column="href"/>
+    <collection property="children" select="selectShowMenuByUser"  column="{parentId = id,userId = myuserId}">
+    </collection>
+  </resultMap>
+
+
+  <select id="selectShowMenuByUser" resultMap="showMenuMap" parameterType="java.util.Map">
+    SELECT
+    distinct m.id as "id",
+    m.parent_id as "pid",
+    m.name as "title",
+    m.icon as "icon",
+    m.href as "href",
+    m.sort,
+    #{userId}  as "myuserId"
+    FROM
+    (select * from sys_menu where del_flag = FALSE ) m
+    LEFT JOIN sys_role_menu srm on srm.menu_id = m.id
+    LEFT JOIN sys_role r on r.id = srm.role_id
+    LEFT JOIN sys_user_role sur on sur.role_id = r.id
+    LEFT JOIN sys_user u on u.id = sur.user_id
+    WHERE
+    u.id = #{userId}
+    <choose>
+      <when test="parentId != null and parentId !='' ">
+        and m.parent_id = #{parentId}
+      </when>
+      <otherwise>
+        and m.parent_id is NULL
+      </otherwise>
+    </choose>
+    and m.is_show = true
+    order by m.sort desc
+  </select>
 </mapper>

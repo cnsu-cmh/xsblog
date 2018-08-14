@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.FieldStrategy;
 import org.hibernate.validator.constraints.Length;
+import com.xqx.common.base.TreeEntity;
 
 @TableName("sys_menu")
 public class Menu extends TreeEntity<Menu> {

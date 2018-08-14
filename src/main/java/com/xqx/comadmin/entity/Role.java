@@ -2,6 +2,7 @@ package com.xqx.comadmin.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.xqx.common.base.DataEntity;
 
 import java.util.Set;
 

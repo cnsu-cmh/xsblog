@@ -15,7 +15,7 @@ layui.use(['form','layer'],function(){
         $.post(data.form.action, data.field, function(res) {
             layer.close(loadIndex);
             if(res.success){
-                location.href="/"+res.data.url;
+                location.href="/"+res.url;
             }else{
                 layer.msg(res.message);
                 $("#randImage").click();

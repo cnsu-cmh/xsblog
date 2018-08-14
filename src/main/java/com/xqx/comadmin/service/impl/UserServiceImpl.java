@@ -22,4 +22,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return u;
     }
 
+    @Override
+    public Map selectUserMenuCount() {
+        return baseMapper.selectUserMenuCount();
+    }
+
+    @Override
+    public User findUserById(String id) {
+        Map<String,Object> map = new HashMap();
+        map.put("id", id);
+        return baseMapper.selectUserByMap(map);
+    }
+
 }

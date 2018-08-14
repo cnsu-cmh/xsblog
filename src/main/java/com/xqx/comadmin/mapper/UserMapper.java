@@ -21,4 +21,6 @@ public interface UserMapper extends BaseMapper<User> {
 
 
     User selectUserByMap(Map<String,Object> map);
+
+    Map selectUserMenuCount();
 }
