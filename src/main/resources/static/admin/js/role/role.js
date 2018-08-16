@@ -50,15 +50,15 @@ layui.use(['layer','form','table'], function() {
         page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
             layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
             //,curr: 5 //设定初始在第 5 页
-            groups: 2, //只显示 1 个连续页码
+            groups: 6, //只显示 1 个连续页码
             first: "首页", //显示首页
             last: "尾页", //显示尾页
             limits:[3,10, 20, 30]
         },
         width: $(parent.window).width()-223,
+        id: 'id',
         cols: [[
             {type:'checkbox'},
-            {field:'id',          title: 'ID',      width:'3%'},
             {field:'name',        title: '角色名称'   },
             {field:'createUser',  title: '创建人',templet:'<div>{{  d.createUser.nickName }}</div>'},
             {field:'updateUser',  title: '修改人',templet:'<div>{{  d.updateUser.nickName }}</div>'},

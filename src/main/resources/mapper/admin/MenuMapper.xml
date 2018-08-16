@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xqx.xsblog.mapper.MenuMapper">
+<mapper namespace="com.xsit.blog.mapper.MenuMapper">
 
-  <resultMap id="showMenuMap" type="com.xqx.xsblog.entity.vo.ShowMenuVo">
+  <resultMap id="showMenuMap" type="com.xsit.blog.entity.vo.ShowMenuVo">
     <result property="id"       column="id" />
     <result property="pid"      column="pid"/>
     <result property="title"    column="title"/>
@@ -41,7 +41,7 @@
     order by m.sort desc
   </select>
 
-  <resultMap type="com.xqx.xsblog.entity.Menu" id="resultMenus">
+  <resultMap type="com.xsit.blog.entity.Menu" id="resultMenus">
     <id property="id" column="id"/>
     <result property="name" column="name"/>
     <result property="parentId" column="parentId"/>

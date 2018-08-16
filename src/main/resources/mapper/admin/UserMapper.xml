@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xqx.xsblog.mapper.UserMapper">
+<mapper namespace="com.xsit.blog.mapper.UserMapper">
 
-  <resultMap type="com.xqx.xsblog.entity.User" id="UserMap">
+  <resultMap type="com.xsit.blog.entity.User" id="UserMap">
     <id property="id" column="id"/>
     <result property="loginName" column="login_name"/>
     <result property="nickName" column="nick_name"/>
@@ -15,11 +15,11 @@
     <result property="remarks" column="remarks"/>
     <result property="delFlag" column="del_flag"/>
     <result property="icon" column="icon" />
-    <collection property="roleLists"  ofType="com.xqx.xsblog.entity.Role">
+    <collection property="roleLists"  ofType="com.xsit.blog.entity.Role">
       <result property="id" column="role.id"/>
       <result property="name" column="role.name"/>
     </collection>
-    <collection property="menus"  ofType="com.xqx.xsblog.entity.Menu">
+    <collection property="menus"  ofType="com.xsit.blog.entity.Menu">
       <result property="id" column="menu.id"/>
       <result property="name" column="menu.name"/>
       <result property="href" column="menu.href"/>

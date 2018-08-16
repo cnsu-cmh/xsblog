@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xqx.xsblog.mapper.RoleMapper">
+<mapper namespace="com.xsit.blog.mapper.RoleMapper">
 
   <!-- 通用查询映射结果 -->
-  <resultMap id="BaseResultMap" type="com.xqx.xsblog.entity.Role">
+  <resultMap id="BaseResultMap" type="com.xsit.blog.entity.Role">
     <id column="id" property="id" />
     <result column="name" property="name" />
     <result column="create_date" property="createDate" />
@@ -27,12 +27,12 @@
     </foreach>
   </insert>
 
-  <resultMap type="com.xqx.xsblog.entity.Role" id="RoleMap">
+  <resultMap type="com.xsit.blog.entity.Role" id="RoleMap">
     <id property="id" column="id"/>
     <result property="name" column="name"/>
     <result property="remarks" column="remarks"/>
     <result property="delFlag" column="del_flag"/>
-    <collection property="menuSet"  ofType="com.xqx.xsblog.entity.Menu">
+    <collection property="menuSet"  ofType="com.xsit.blog.entity.Menu">
       <result property="id" column="menuSet.id"/>
       <result property="name" column="menuSet.name"/>
       <result property="permission" column="menuSet.permission"/>
@@ -60,8 +60,8 @@
     left join sys_menu  m    		on 	    m.id = srm.menu_id
     where
     r.del_flag = FALSE
-    <if test="id != 0 or id != null">
-      and r.id = #{id}
+    <if test="roleId != null and roleId != ''">
+      and r.id = #{roleId}
     </if>
   </select>
 

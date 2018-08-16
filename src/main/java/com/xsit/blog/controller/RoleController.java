@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("admin/system/role")
@@ -94,7 +95,7 @@ public class RoleController {
         map.put("isShow",false);
         List<Menu> menuList = menuService.selectAllMenus(map);
         modelMap.put("menuList",menuList);
-        return "admin/system/role/add";
+        return "admin/role/add";
     }
 
     @RequiresPermissions("sys:role:add")
@@ -115,14 +116,9 @@ public class RoleController {
     @GetMapping("edit")
     public String edit(String id,ModelMap modelMap){
         Role role = roleService.getRoleById(id);
-        StringBuilder menuIds = new StringBuilder();
+        String menuIds = null;
         if(role != null) {
-            Set<Menu> menuSet = role.getMenuSet();
-            if (menuSet != null && menuSet.size() > 0) {
-                for (Menu m : menuSet) {
-                    menuIds.append(m.getId().toString()).append(",");
-                }
-            }
+            menuIds  = role.getMenuSet().stream().map(menu -> menu.getId()).collect(Collectors.joining(","));
         }
         Map<String,Object> map = new HashMap();
         map.put("parentId",null);
@@ -130,8 +126,8 @@ public class RoleController {
         List<Menu> menuList = menuService.selectAllMenus(map);
         modelMap.put("role",role);
         modelMap.put("menuList",menuList);
-        modelMap.put("menuIds",menuIds.toString());
-        return "admin/system/role/edit";
+        modelMap.put("menuIds",menuIds);
+        return "admin/role/edit";
     }
 
     @RequiresPermissions("sys:role:edit")

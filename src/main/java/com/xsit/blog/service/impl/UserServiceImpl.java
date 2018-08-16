@@ -24,9 +24,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User findUserById(String id) {
-        Map<String,Object> map = new HashMap();
-        map.put("id", id);
-        return baseMapper.selectUserByMap(map);
+//        Map<String,Object> map = new HashMap();
+//        map.put("id", id);
+        return baseMapper.selectById(id);
     }
 
 }
