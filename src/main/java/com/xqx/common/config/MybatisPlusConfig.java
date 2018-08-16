@@ -1,8 +1,9 @@
 package com.xqx.common.config;
 
-import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Primary;
 import javax.sql.DataSource;
 
 @SpringBootConfiguration
+@MapperScan("com.xqx.xsblog.mapper*")
 public class MybatisPlusConfig {
 
     /***
@@ -38,17 +40,18 @@ public class MybatisPlusConfig {
         return page;
     }
 
-    @Bean(name = "comadmindb")
-    @ConfigurationProperties(prefix = "spring.datasource.hikari.comadmin" )
-    public DataSource db1 () {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
-    }
 
     //默认数据源
-    @Primary
+    /*@Primary
     @Bean(name = "xsblogdb")
     @ConfigurationProperties(prefix = "spring.datasource.hikari.xsblog" )
+    public DataSource db1 () {
+        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    }*/
+
+    /*@Bean(name = "comadmindb")
+    @ConfigurationProperties(prefix = "spring.datasource.hikari.comadmin" )
     public DataSource db2 () {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
-    }
+    }*/
 }

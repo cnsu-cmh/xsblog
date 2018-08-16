@@ -12,8 +12,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
-@SpringBootConfiguration
-@MapperScan(basePackages = "com.xqx.xsblog.mapper")
+/*@SpringBootConfiguration
+@MapperScan(basePackages = "com.xqx.xsblog.mapper")*/
 public class XsBlogSqlConfig {
 
     @Bean
@@ -21,7 +21,7 @@ public class XsBlogSqlConfig {
     public SqlSessionFactory xsBlogSqlSessionFactory(DataSource xsBlogDataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(xsBlogDataSource);
-        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/xsblog/*Mapper.xml"));
+        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/**/*Mapper.xml"));
         bean.setTypeAliasesPackage("com.xqx.xsblog.entity");
         return bean.getObject();
     }

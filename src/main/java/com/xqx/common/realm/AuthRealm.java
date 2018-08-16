@@ -1,11 +1,11 @@
 package com.xqx.common.realm;
 
-import com.xqx.comadmin.controller.LonginController;
-import com.xqx.comadmin.entity.Menu;
-import com.xqx.comadmin.entity.Role;
-import com.xqx.comadmin.entity.User;
+import com.xqx.xsblog.controller.LonginController;
+import com.xqx.xsblog.entity.Menu;
+import com.xqx.xsblog.entity.Role;
+import com.xqx.xsblog.entity.User;
 import com.xqx.common.exception.UserTypeAccountException;
-import com.xqx.comadmin.service.UserService;
+import com.xqx.xsblog.service.UserService;
 import com.xqx.common.util.Constants;
 import com.xqx.common.util.Encodes;
 import org.apache.commons.lang3.StringUtils;
@@ -22,11 +22,8 @@ import org.apache.shiro.web.subject.WebSubject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

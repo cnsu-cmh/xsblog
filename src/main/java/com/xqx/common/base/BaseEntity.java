@@ -1,13 +1,14 @@
 package com.xqx.common.base;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 
-import javax.persistence.Id;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.io.Serializable;
 
 public class BaseEntity<T extends Model> extends Model<T> {
 
-    @Id
+    @TableId
     protected String id;
 
     public BaseEntity() {

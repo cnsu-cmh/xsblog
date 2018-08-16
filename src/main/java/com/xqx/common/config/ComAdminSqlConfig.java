@@ -12,15 +12,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
-@SpringBootConfiguration
-@MapperScan(basePackages = "com.xqx.comadmin.mapper", sqlSessionFactoryRef = "comAdminSqlSessionFactory")
+//@SpringBootConfiguration
+//@MapperScan(basePackages = "com.xqx.comadmin.mapper", sqlSessionFactoryRef = "comAdminSqlSessionFactory")
 public class ComAdminSqlConfig {
 
     @Bean
     public SqlSessionFactory comAdminSqlSessionFactory(@Qualifier("comadmindb")DataSource comAdminDataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(comAdminDataSource);
-        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/comadmin/*Mapper.xml"));
+        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/comadmin/**/*Mapper.xml"));
         bean.setTypeAliasesPackage("com.xqx.comadmin.entity");
         return bean.getObject();
     }
