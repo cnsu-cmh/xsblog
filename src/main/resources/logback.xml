@@ -178,7 +178,7 @@
 
     <logger name="org.springframework.web" level="info"/>
     <logger name="org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor" level="INFO"/>
-    <logger name="com.xqx" level="debug"/>
+    <logger name="com.xsit" level="debug"/>
 
 
     <root level="info">
