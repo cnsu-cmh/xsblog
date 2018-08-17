@@ -6,6 +6,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * 公共字段自动填充
+ * createDate 创建时间
+ * createId   创建用户ID
+ * updateDate 修改时间
+ * updateId   修改用户ID
+ */
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
 
