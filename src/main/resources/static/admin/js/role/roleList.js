@@ -56,16 +56,19 @@ layui.use(['layer','form','table'], function() {
             limits:[3,10, 20, 30]
         },
         width: $(parent.window).width()-223,
-        id: 'id',
         cols: [[
             {type:'checkbox'},
+            {field:'id',        title: 'ID'   },
             {field:'name',        title: '角色名称'   },
             {field:'createUser',  title: '创建人',templet:'<div>{{  d.createUser.nickName }}</div>'},
             {field:'updateUser',  title: '修改人',templet:'<div>{{  d.updateUser.nickName }}</div>'},
             {field:'createDate',  title: '创建时间',    width:'14%',templet:'<div>{{ layui.laytpl.toDateString(d.createDate) }}</div>',unresize: true}, //单元格内容水平居中
             {field:'updateDate',  title: '修改时间',    width:'14%',templet:'<div>{{ layui.laytpl.toDateString(d.updateDate) }}</div>',unresize: true}, //单元格内容水平居中
             {title: '操作',fixed: 'right',  width:'15%',    align: 'center',toolbar: '#roleBar'}
-        ]]
+        ]],
+        done: function () {
+            $("[data-field='id']").css('display','none');
+        }
     };
     table.render(t);
     var active={
@@ -127,8 +130,10 @@ layui.use(['layer','form','table'], function() {
     });
     //搜索
     form.on("submit(searchForm)",function(data){
-        t.where = data.field;
-        table.reload('role-table', t);
+        table.reload('role-table', {
+            page: {curr: 1},
+            where: data.field
+        });
         return false;
     });
 });

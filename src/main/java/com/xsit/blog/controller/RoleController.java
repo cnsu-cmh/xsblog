@@ -135,7 +135,7 @@ public class RoleController {
     @ResponseBody
     @SysLog("保存编辑角色数据")
     public ResponseEntity edit(@RequestBody Role role){
-        if(StringUtils.isNotBlank(role.getId())) {
+        if(StringUtils.isBlank(role.getId())){
             return ResponseEntity.failure("角色ID不能为空");
         }
         if(StringUtils.isBlank(role.getName())){
@@ -156,7 +156,7 @@ public class RoleController {
     @ResponseBody
     @SysLog("删除角色数据")
     public ResponseEntity delete(@RequestParam(value = "id",required = false)String id){
-        if(StringUtils.isNotBlank(id)){
+        if(StringUtils.isBlank(id)){
             return ResponseEntity.failure("角色ID不能为空");
         }
         Role role = roleService.getRoleById(id);

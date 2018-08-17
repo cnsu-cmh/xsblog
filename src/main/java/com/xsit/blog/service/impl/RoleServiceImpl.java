@@ -24,7 +24,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper,Role> implements Rol
     @Transactional(rollbackFor = Exception.class)
     public Role saveRole(Role role) {
         baseMapper.insert(role);
-        baseMapper.saveRoleMenus(role.getId(),role.getMenuSet());
+        if(role.getMenuSet() != null && role.getMenuSet().size() > 0) {
+            baseMapper.saveRoleMenus(role.getId(),role.getMenuSet());
+        }
         return role;
     }
 
@@ -38,7 +40,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper,Role> implements Rol
     public void updateRole(Role role) {
         baseMapper.updateById(role);
         baseMapper.dropRoleMenus(role.getId());
-        baseMapper.saveRoleMenus(role.getId(),role.getMenuSet());
+        if(role.getMenuSet() != null && role.getMenuSet().size() > 0) {
+            baseMapper.saveRoleMenus(role.getId(), role.getMenuSet());
+        }
     }
 
     @Override
