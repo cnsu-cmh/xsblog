@@ -3,6 +3,8 @@ package com.xsit.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xsit.blog.entity.Role;
 
+import java.util.List;
+
 public interface RoleService extends IService<Role> {
 
     long getRoleNameCount(String name);
@@ -14,4 +16,6 @@ public interface RoleService extends IService<Role> {
     void updateRole(Role role);
 
     void deleteRole(Role role);
+
+    List<Role> selectAll();
 }

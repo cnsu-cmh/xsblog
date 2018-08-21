@@ -1,6 +1,7 @@
 package com.xsit.common.util;
 
 
+import com.xsit.blog.entity.User;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
@@ -9,11 +10,17 @@ import org.apache.commons.codec.binary.Hex;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 
 public class Encodes {
 
     private static final String DEFAULT_URL_ENCODING = "UTF-8";
     private static final char[] BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
+
+    private static SecureRandom random = new SecureRandom();
+    private static final String SHA1 = "SHA-1";
 
     /**
      * Hex编码.
@@ -127,6 +134,34 @@ public class Encodes {
         try {
             return URLDecoder.decode(part, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void entryptPassword(User user) {
+        byte[] salt = new byte[Constants.SALT_SIZE];
+        random.nextBytes(salt);
+        user.setSalt(encodeHex(salt));
+        byte[] hashPassword = sha1(user.getPassword().getBytes(), SHA1, salt, Constants.HASH_INTERATIONS);
+        user.setPassword(encodeHex(hashPassword));
+    }
+
+    private static byte[] sha1(byte[] input, String algorithm, byte[] salt, int iterations) throws RuntimeException {
+        try {
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+
+            if (salt != null) {
+                digest.update(salt);
+            }
+
+            byte[] result = digest.digest(input);
+
+            for (int i = 1; i < iterations; i++) {
+                digest.reset();
+                result = digest.digest(result);
+            }
+            return result;
+        } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
     }

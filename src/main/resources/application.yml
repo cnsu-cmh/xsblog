@@ -16,7 +16,7 @@ spring:
     datasource:
         jdbc-url: jdbc:mysql://localhost:3306/xsblog?useUnicode=true&characterEncoding=utf8
         username: root
-        password: cmh199410
+        password: xqx1234
         driver-class-name: com.mysql.jdbc.Driver
         maximum-pool-size: 30
 
@@ -63,7 +63,7 @@ spring:
   datasource:
       url: jdbc:mysql://localhost:3306/xsblog?useUnicode=true&characterEncoding=utf8
       username: root
-      password: cmh199410
+      password: xqx1234
       driver-class-name: com.mysql.jdbc.Driver
       maximum-pool-size: 30
 server:
@@ -85,7 +85,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/xsblog?useUnicode=true&characterEncoding=utf8
     username: root
-    password: cmh199410
+    password: xqx1234
     driver-class-name: com.mysql.jdbc.Driver
     maximum-pool-size: 30
 server:
@@ -100,7 +100,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/xsblog?useUnicode=true&characterEncoding=utf8
     username: root
-    password: cmh199410
+    password: xqx1234
     driver-class-name: com.mysql.jdbc.Driver
     maximum-pool-size: 30
 server:

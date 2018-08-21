@@ -51,7 +51,7 @@ public class RoleController {
                                 @RequestParam(value = "limit",defaultValue = "10")Integer limit,
                                 ServletRequest request){
         Map map = WebUtils.getParametersStartingWith(request, "s_");
-        PageData<Role> roleLayerData = new PageData<>();
+        PageData<Role> rolePageData = new PageData<>();
         QueryWrapper<Role> roleWrapper = new QueryWrapper<>();
         roleWrapper.eq("del_flag",false);
         if(!map.isEmpty()){
@@ -61,9 +61,9 @@ public class RoleController {
             }
         }
         IPage<Role> rolePage = roleService.page(new Page<>(page,limit),roleWrapper);
-        roleLayerData.setCount(rolePage.getTotal());
-        roleLayerData.setData(setUserToRole(rolePage.getRecords()));
-        return roleLayerData;
+        rolePageData.setCount(rolePage.getTotal());
+        rolePageData.setData(setUserToRole(rolePage.getRecords()));
+        return rolePageData;
     }
 
     private List<Role> setUserToRole(List<Role> roles){

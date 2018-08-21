@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xsit.blog.mapper.UserMapper">
 
-  <resultMap type="com.xsit.blog.entity.User" id="UserMap">
+    <resultMap type="com.xsit.blog.entity.User" id="UserMap">
     <id property="id" column="id"/>
     <result property="loginName" column="login_name"/>
     <result property="nickName" column="nick_name"/>
@@ -28,9 +28,9 @@
       <result property="icon" column="menu.icon"/>
       <result property="sort" column="menu.sort"/>
     </collection>
-  </resultMap>
+    </resultMap>
 
-  <select id="selectUserByMap" parameterType="java.util.Map" resultMap="UserMap">
+    <select id="selectUserByMap" parameterType="java.util.Map" resultMap="UserMap">
       SELECT
       u.id,
       u.login_name,
@@ -61,7 +61,7 @@
       left join sys_menu  m    		on 	m.id = srm.menu_id
       where
       1=1
-      <if test="id == 0 or id == null">
+      <if test="id == null or id == ''">
           and u.del_flag = false
           and r.del_flag = false
       </if>
@@ -72,9 +72,21 @@
           or u.email = #{loginName}
           )
       </if>
-      <if test="id != 0 and id != null">
+      <if test="id != null and id != ''">
           and u.id = #{id}
       </if>
-  </select>
+    </select>
+
+    <select id="saveUserRoles">
+        insert into sys_user_role(user_id,role_id)
+        values
+        <foreach collection="roleIds" item="item" index="index" separator="," >
+            (#{userId},#{item.id})
+        </foreach>
+    </select>
+
+    <delete id="dropUserRolesByUserId" parameterType="java.lang.String">
+        delete from sys_user_role where user_id = #{userId}
+    </delete>
 
 </mapper>
