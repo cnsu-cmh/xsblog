@@ -25,8 +25,8 @@ layui.use(['layer','form','table'], function() {
             {field:'email',     title: '邮箱',    width:'16%' },
             {field:'tel',       title: '电话',    width:'12%'},
             {field:'adminUser', title: '用户类型', width:'8%',templet:'#userType'},
-            {field:'locked',    title: '状态',width:'10%',templet:'#userStatus'},
-            {field:'createDate',  title: '创建时间',width:'14%', templet:'<div>{{ layui.laytpl.toDateString(d.createDate) }}</div>',unresize: true}, //单元格内容水平居中
+            {field:'locked',    title: '状态',width:'8%',templet:'#userStatus'},
+            {field:'createDate',  title: '创建时间',width:'14%', templet:'<span>{{ layui.laytpl.toDateString(d.createDate) }}</span>'}, //单元格内容水平居中
             {fixed: 'right', align: 'center', toolbar: '#userBar'}
         ]]
     };
@@ -116,10 +116,9 @@ layui.use(['layer','form','table'], function() {
             var checkStatus = table.checkStatus('userTable'),
                 data = checkStatus.data;
             if(data.length > 0){
-                console.log(JSON.stringify(data));
                 for(var i=0;i<data.length;i++){
                     var d = data[i];
-                    if(d.id === 1){
+                    if(d.adminUser){
                         layer.msg("不能删除超级管理员");
                         return false;
                     }

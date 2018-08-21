@@ -16,7 +16,7 @@ public class BaseEntity<T extends Model> extends Model<T> {
 
     @Override
     protected Serializable pkVal() {
-        return null;
+        return this.id;
     }
 
     public BaseEntity(String id) {

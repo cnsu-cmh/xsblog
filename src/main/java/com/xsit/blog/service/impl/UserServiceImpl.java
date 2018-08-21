@@ -62,8 +62,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteUser(User user) {
+        user.setDelFlag(true);
+        user.updateById();
+    }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void lockUser(User user) {
+        user.setLocked(!user.getLocked());
+        user.updateById();
     }
 
     @Transactional(rollbackFor = Exception.class)

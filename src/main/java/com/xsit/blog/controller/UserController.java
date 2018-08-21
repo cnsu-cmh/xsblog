@@ -167,12 +167,28 @@ public class UserController {
         return ResponseEntity.success("操作成功");
     }
 
+    @RequiresPermissions("sys:user:lock")
+    @PostMapping("lock")
+    @ResponseBody
+    @SysLog("锁定或开启系统用户")
+    public ResponseEntity lock(@RequestParam(value = "id",required = false)String id){
+        if(StringUtils.isBlank(id)){
+            return ResponseEntity.failure("参数错误");
+        }
+        User user = userService.getById(id);
+        if(user == null){
+            return ResponseEntity.failure("用户不存在");
+        }
+        userService.lockUser(user);
+        return ResponseEntity.success("操作成功");
+    }
+
     @RequiresPermissions("sys:user:delete")
     @PostMapping("delete")
     @ResponseBody
     @SysLog("删除系统用户数据(单个)")
     public ResponseEntity delete(@RequestParam(value = "id",required = false)String id){
-        if(StringUtils.isNotBlank(id)){
+        if(StringUtils.isBlank(id)){
             return ResponseEntity.failure("参数错误");
         }
         User user = userService.getById(id);

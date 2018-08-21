@@ -19,17 +19,18 @@ layui.use(['form','jquery','layer'],function(){
 
         //判断用户是否后台用户
         if(undefined !== data.field.adminUser && null != data.field.adminUser){
-            data.field.delFlag = true;
+            data.field.adminUser = true;
         }else{
-            data.field.delFlag = false;
+            data.field.adminUser = false;
         }
 
         //判断用户是否启用
-        if(undefined !== data.field.delFlag && null != data.field.delFlag){
-            data.field.delFlag = false;
+        if(undefined !== data.field.locked && null != data.field.locked){
+            data.field.locked = false;
         }else{
-            data.field.delFlag = true;
+            data.field.locked = true;
         }
+
         var loadIndex = layer.load(2, {
             shade: [0.3, '#333']
         });
@@ -51,6 +52,14 @@ layui.use(['form','jquery','layer'],function(){
             }
         });
         return false;
+    });
+
+    form.on('switch(adminUser)', function(data){
+        $("#adminUser").val(data.elem.checked);
+    });
+
+    form.on('switch(locked)', function(data){
+        $("#locked").val(data.elem.checked);
     });
 
 });

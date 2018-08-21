@@ -71,18 +71,20 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">是否后台用户</label>
-        <div class="layui-input-block">
-            <input type="checkbox" name="adminUser" lay-skin="switch" value="true"  lay-text="后台用户|前台用户" th:checked="(${localuser.adminUser}) ? checked" />
+        <div class="layui-inline">
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-block">
+                <input type="checkbox" th:id="adminUser" name="adminUser" lay-filter="adminUser" lay-skin="switch" lay-text="后台用户|前台用户" th:value="${localuser.adminUser}" th:checked="(${localuser.adminUser}) ? checked" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input type="checkbox" th:id="locked" name="locked" lay-filter="locked" lay-skin="switch" lay-text="启用|停用" th:value="${localuser.locked}" th:checked="(${localuser.locked} == false) ? checked" />
+            </div>
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">是否启用</label>
-        <div class="layui-input-block">
-            <input type="checkbox" name="delFlag" lay-skin="switch" value="true"  lay-text="启用|停用" th:checked="(${localuser.delFlag} == false) ? checked" />
-        </div>
-    </div>
     <shiro:hasPermission name="sys:user:edit">
     <div class="layui-form-item">
         <div class="layui-input-block">

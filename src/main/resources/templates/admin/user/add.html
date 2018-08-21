@@ -75,13 +75,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">用户类型</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="adminUser" lay-skin="switch" value="true"  lay-text="后台用户|前台用户" checked/>
+                <input type="checkbox" th:id="adminUser"  name="adminUser" th:value="true" lay-filter="adminUser" lay-skin="switch" value="true"  lay-text="后台用户|前台用户" checked/>
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">是否启用</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="delFlag" lay-skin="switch"  lay-filter="delFlag"  lay-text="启用|停用" checked>
+                <input type="checkbox" th:id="locked" name="locked" th:value="true" lay-skin="switch"  lay-filter="locked"  lay-text="启用|停用" checked>
             </div>
         </div>
     </div>
