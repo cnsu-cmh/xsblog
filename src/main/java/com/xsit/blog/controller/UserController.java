@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xsit.blog.entity.Role;
 import com.xsit.blog.entity.User;
 import com.xsit.blog.service.RoleService;
+import com.xsit.blog.service.UploadService;
 import com.xsit.blog.service.UserService;
 import com.xsit.common.annotation.SysLog;
 import com.xsit.common.base.PageData;
+import com.xsit.common.config.MySysUser;
 import com.xsit.common.util.Constants;
+import com.xsit.common.util.Encodes;
 import com.xsit.common.util.ResponseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -17,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,6 +39,9 @@ public class UserController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    UploadService uploadService;
 
     @GetMapping("list")
     @SysLog("跳转系统用户列表页面")
@@ -217,6 +225,102 @@ public class UserController {
             }
         }
         return ResponseEntity.success("操作成功");
+    }
+
+    @GetMapping("userinfo")
+    public String toEditMyInfo(ModelMap modelMap){
+        String userId = MySysUser.id();
+        User user = userService.findUserById(userId);
+        modelMap.put("userinfo",user);
+        modelMap.put("userRole",user.getRoleLists());
+        return "admin/user/userInfo";
+    }
+
+    @SysLog("系统用户个人信息修改")
+    @PostMapping("saveUserinfo")
+    @ResponseBody
+    public ResponseEntity saveUserInfo(User user){
+        if(StringUtils.isBlank(user.getId())){
+            return ResponseEntity.failure("用户ID不能为空");
+        }
+        if(StringUtils.isBlank(user.getLoginName())){
+            return ResponseEntity.failure("登录名不能为空");
+        }
+        User oldUser = userService.findUserById(user.getId());
+        if(StringUtils.isNotBlank(user.getEmail())){
+            if(!user.getEmail().equals(oldUser.getEmail())){
+                if(userService.userCount(user.getEmail())>0){
+                    return ResponseEntity.failure("该邮箱已被使用");
+                }
+            }
+        }
+        if(StringUtils.isNotBlank(user.getTel())){
+            if(!user.getTel().equals(oldUser.getTel())) {
+                if (userService.userCount(user.getTel()) > 0) {
+                    return ResponseEntity.failure("该手机号已经被绑定");
+                }
+            }
+        }
+        userService.updateById(user);
+        return ResponseEntity.success("操作成功");
+    }
+
+    @GetMapping("changePassword")
+    public String changePassword(ModelMap modelMap){
+        modelMap.put("currentUser",userService.getById(MySysUser.id()));
+        return "admin/user/changePassword";
+    }
+
+    @SysLog("用户修改密码")
+    @PostMapping("changePassword")
+    @ResponseBody
+    public ResponseEntity changePassword(@RequestParam(value = "oldPwd",required = false)String oldPwd,
+                                       @RequestParam(value = "newPwd",required = false)String newPwd,
+                                       @RequestParam(value = "confirmPwd",required = false)String confirmPwd){
+        if(StringUtils.isBlank(oldPwd)){
+            return ResponseEntity.failure("旧密码不能为空");
+        }
+        if(StringUtils.isBlank(newPwd)){
+            return ResponseEntity.failure("新密码不能为空");
+        }
+        if(StringUtils.isBlank(confirmPwd)){
+            return ResponseEntity.failure("确认密码不能为空");
+        }
+        if(!confirmPwd.equals(newPwd)){
+            return ResponseEntity.failure("确认密码与新密码不一致");
+        }
+        User user = userService.findUserById(MySysUser.id());
+
+        byte[] hashPassword = Encodes.sha1(oldPwd.getBytes(), Encodes.SHA1, Encodes.decodeHex(user.getSalt()), Constants.HASH_INTERATIONS);
+        String password = Encodes.encodeHex(hashPassword);
+
+        if(!user.getPassword().equals(password)){
+            return ResponseEntity.failure("旧密码错误");
+        }
+        user.setPassword(newPwd);
+        Encodes.entryptPassword(user);
+        userService.updateById(user);
+        return ResponseEntity.success("操作成功");
+    }
+
+    @SysLog("上传头像")
+    @PostMapping("uploadFace")
+    @ResponseBody
+    public ResponseEntity uploadFile(@RequestParam("icon") MultipartFile file, HttpServletRequest httpServletRequest) {
+        if(file == null){
+            return ResponseEntity.failure("上传文件为空 ");
+        }
+        String url = null;
+        Map map = new HashMap();
+        try {
+            url = uploadService.upload(file);
+            map.put("url", url);
+            map.put("name", file.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.failure(e.getMessage());
+        }
+        return ResponseEntity.success("操作成功").setAny("data",map);
     }
 
 }

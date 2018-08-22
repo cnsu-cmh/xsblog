@@ -7,11 +7,13 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class Encodes {
@@ -20,7 +22,7 @@ public class Encodes {
     private static final char[] BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
     private static SecureRandom random = new SecureRandom();
-    private static final String SHA1 = "SHA-1";
+    public static final String SHA1 = "SHA-1";
 
     /**
      * Hex编码.
@@ -146,7 +148,7 @@ public class Encodes {
         user.setPassword(encodeHex(hashPassword));
     }
 
-    private static byte[] sha1(byte[] input, String algorithm, byte[] salt, int iterations) throws RuntimeException {
+    public static byte[] sha1(byte[] input, String algorithm, byte[] salt, int iterations) throws RuntimeException {
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
 
@@ -164,6 +166,17 @@ public class Encodes {
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static byte[] sha1(byte[] data) throws NoSuchAlgorithmException {
+        MessageDigest mDigest = MessageDigest.getInstance("sha1");
+        return mDigest.digest(data);
+    }
+
+    public static String urlSafeBase64Encode(byte[] data) {
+        String encodedString = DatatypeConverter.printBase64Binary(data);
+        encodedString = encodedString.replace('+', '-').replace('/', '_');
+        return encodedString;
     }
 
 }
